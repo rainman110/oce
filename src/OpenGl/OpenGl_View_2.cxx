@@ -1189,6 +1189,10 @@ D = -[Px,Py,Pz] dot |Nx|
   // and invoking optional callbacks
   AWorkspace->ResetAppliedAspect();
 
+  // OCC_PRE_REDRAW callback
+  const int aMode = 0;
+  AWorkspace->DisplayCallback (ACView, (aMode | OCC_PRE_REDRAW));
+  
   // Disable current clipping planes
   for ( planeid = GL_CLIP_PLANE0; planeid < lastid; planeid++ )
     glDisable( planeid );
@@ -1213,7 +1217,6 @@ D = -[Px,Py,Pz] dot |Nx|
 
   /////////////////////////////////////////////////////////////////////////////
   // Step 6: Draw overlayer
-  const int aMode = 0;
   AWorkspace->DisplayCallback (ACView, (aMode | OCC_PRE_OVERLAY));
 
   RedrawLayer2d(AWorkspace, ACView, ACOverLayer);

@@ -502,3 +502,6 @@ t TKQADraw
 p QADNaming
 p QABugs
 p Font
+p ShapeInterference
+p ShapePlacement
+t TKRmPkg

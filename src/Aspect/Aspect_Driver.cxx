@@ -42,6 +42,7 @@
 
 #include <Aspect_Driver.ixx>
 #include <OSD_Environment.hxx>
+#include <OSD_DirectoryIterator.hxx>
 
 static Standard_Boolean dirMFTisDefined = Standard_False;
 
@@ -71,7 +72,8 @@ Aspect_Driver::Aspect_Driver () {
   }
   TCollection_AsciiString dir(CSF_MDTVFontDirectory.Value());
 
-  dirMFTisDefined = (dir.Length() > 0);
+  OSD_DirectoryIterator osd_dir(dir,"*");
+  dirMFTisDefined = (osd_dir.More());
   myUseMFT = Standard_True;
   myColorMapIsDefined = Standard_False;   
   myWidthMapIsDefined = Standard_False;   

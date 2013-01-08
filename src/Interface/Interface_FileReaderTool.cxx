@@ -37,6 +37,11 @@
 #endif
 #include <stdio.h>
 
+#ifdef HAVE_XLOCALE_H
+#include <xlocale.h>
+#endif
+#include <locale.h>
+
 // MGE 16/06/98
 // To use Msg class
 #include <Message_Msg.hxx>
@@ -311,6 +316,15 @@ void Interface_FileReaderTool::LoadModel
 //   qui doit y donner acces de la facon la plus performante possible
 //   chaque interface definit son FileHeader avec ses methodes, appelees ici
 {
+#ifdef WNT
+  int oldConfigureThreadLocale = _configurethreadlocale(_ENABLE_PER_THREAD_LOCALE);
+  char* localeOld = setlocale(LC_NUMERIC, "C");
+#elif defined(HAVE_USELOCALE)
+  locale_t localeC = newlocale (LC_NUMERIC_MASK, "C", 0);
+  locale_t localeOld = uselocale(localeC);
+#else
+  char* localeOld = setlocale(LC_NUMERIC, "C");
+#endif
   // MGE 16/06/98
   // Building of Messages
   //====================================
@@ -484,6 +498,15 @@ void Interface_FileReaderTool::LoadModel
   }
   else
     EndRead(amodel);  // selon la norme
+#ifdef WNT
+  _configurethreadlocale(oldConfigureThreadLocale);
+  setlocale(LC_NUMERIC, localeOld);
+#elif defined(HAVE_USELOCALE)
+  uselocale(localeOld);
+  freelocale(localeC);
+#else
+  setlocale(LC_NUMERIC, localeOld);
+#endif
 }
 
 

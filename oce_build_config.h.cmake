@@ -193,6 +193,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine HAVE_UNISTD_H 1
 
+/* Define to 1 if you have the `uselocale' function. */
+#cmakedefine HAVE_USELOCALE 1
+
 /* Define to 1 if you have the <values.h> header file. */
 #cmakedefine HAVE_VALUES_H 1
 
@@ -201,6 +204,9 @@
 
 /* Define to 1 if you have the <X11/extensions/readdisplay.h> header file. */
 #cmakedefine HAVE_X11_EXTENSIONS_READDISPLAY_H 1
+
+/* Define to 1 if you have the <xlocale.h> header file. */
+#cmakedefine HAVE_XLOCALE_H 1
 
 /* Define if your C compiler doesn't accept -c and -o together. */
 #cmakedefine NO_MINUS_C_MINUS_O

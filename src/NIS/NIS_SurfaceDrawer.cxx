@@ -26,7 +26,11 @@
 #ifdef WNT
 #include <windows.h>
 #endif
-#include <GL/gl.h>
+#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+  #include <OpenGL/gl.h>
+#else
+  #include <GL/gl.h>
+#endif
 
 static void setColor(GLenum               theFace,
                      Quantity_Parameter * theAmbient,

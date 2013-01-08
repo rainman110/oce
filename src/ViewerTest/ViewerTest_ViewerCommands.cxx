@@ -61,25 +61,27 @@
 #include <Visual3d_Layer.hxx>
 #include <cstdlib>
 
-#ifndef WNT
-#include <Graphic3d_GraphicDevice.hxx>
-#include <Xw_GraphicDevice.hxx>
-#include <Xw_WindowQuality.hxx>
-#include <Xw_Window.hxx>
-#include <X11/Xlib.h> /* contains some dangerous #defines such as Status, True etc. */
-#include <X11/Xutil.h>
-#include <tk.h>
-
-#else
-
-#include <Graphic3d_WNTGraphicDevice.hxx>
-#include <WNT_WClass.hxx>
-#include <WNT_Window.hxx>
-
-#ifdef _MSC_VER
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
+#if defined(_WIN32) || defined(__WIN32__)
+  #include <Graphic3d_WNTGraphicDevice.hxx>
+  #include <WNT_WClass.hxx>
+  #include <WNT_Window.hxx>
+  
+  #if defined(_MSC_VER)
+    #define _CRT_SECURE_NO_DEPRECATE
+    #pragma warning (disable:4996)
+  #endif
+  #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+    #include <Graphic3d_GraphicDevice.hxx>
+    #include <Cocoa_Window.hxx>
+    #include <tk.h>
+  #else
+    #include <Graphic3d_GraphicDevice.hxx>
+    #include <Xw_GraphicDevice.hxx>
+    #include <Xw_WindowQuality.hxx>
+    #include <Xw_Window.hxx>
+    #include <X11/Xlib.h> /* contains some dangerous #defines such as Status, True etc. */
+    #include <X11/Xutil.h>
+    #include <tk.h>
 #endif
 
 #ifndef max

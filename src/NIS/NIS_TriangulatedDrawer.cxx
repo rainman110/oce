@@ -27,7 +27,11 @@
 #ifdef WNT
 #include <windows.h>
 #endif
-#include <GL/gl.h>
+#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+  #include <OpenGL/gl.h>
+#else
+  #include <GL/gl.h>
+#endif
 
 // Comment this line if you see no hilighting of triangulations due to negative
 // polygon offsets. Disabling this macro means that all offsets will be created

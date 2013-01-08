@@ -1,5 +1,6 @@
 #include <TopoDS_Shape.hxx>
 #include <IGESControl_Reader.hxx>
+#include <IGESControl_Writer.hxx>
 
 #include <OSD_File.hxx>
 #include <OSD_Protection.hxx>
@@ -12,25 +13,30 @@
 
 #include "IGESImport_test_config.h"
 
-static void readFile(Standard_CString aFileName, Standard_CString aLogFileName)
+static void readFile(Standard_CString aFileName, Standard_CString aLogFileName, Standard_CString outFileName)
 {
     Handle(Message_Printer) printer = new Message_PrinterOStream(aLogFileName, 0);
     Message::DefaultMessenger()->AddPrinter(printer);
     IGESControl_Reader Reader;
     int status = Reader.ReadFile(aFileName);
     ASSERT_EQ(status,IFSelect_RetDone);
-    TopoDS_Shape tdsshape;
+    TopoDS_Shape aShape;
     if ( status == IFSelect_RetDone )
     {
         Reader.TransferRoots();
         Reader.PrintCheckTransfer(1, IFSelect_CountSummary);
-        tdsshape = Reader.OneShape();
+        aShape = Reader.OneShape();
+
+        IGESControl_Writer aWriter;
+        aWriter.AddShape(aShape);
+        aWriter.ComputeModel();
+        aWriter.Write(outFileName);
     }
-    ASSERT_FALSE(tdsshape.IsNull());
+    ASSERT_FALSE(aShape.IsNull());
     Message::DefaultMessenger()->RemovePrinter(printer);
 }
 
-static void compareLogFile(Standard_CString aFileName1, Standard_CString aFileName2)
+static void compareFiles(Standard_CString aFileName1, Standard_CString aFileName2)
 {
     Standard_Integer bufferSize = 4000;
     TCollection_AsciiString Buffer1(bufferSize, 0);
@@ -55,19 +61,23 @@ static void compareLogFile(Standard_CString aFileName1, Standard_CString aFileNa
 
 TEST(IGESImportTestSuite, testImportIGES_1)
 {
-    readFile((Standard_CString) iges_file_1, "reader_1-C.log");
+    readFile((Standard_CString) iges_file_1, "reader_1-C.log", "out1-C.igs");
 }
 
 #ifdef LOCALE_FOR_TESTS
 TEST(IGESImportTestSuite, testImportIGES_1L)
 {
     Standard_CString oldLocale = std::setlocale(LC_ALL, LOCALE_FOR_TESTS);
-    readFile((Standard_CString) iges_file_1, "reader_1-" LOCALE_FOR_TESTS ".log");
+    readFile((Standard_CString) iges_file_1, "reader_1-" LOCALE_FOR_TESTS ".log", "out1-" LOCALE_FOR_TESTS ".igs");
     std::setlocale(LC_ALL, oldLocale);
 }
 TEST(IGESImportTestSuite, testImportIGES_1D)
 {
-    compareLogFile("reader_1-C.log", "reader_1-" LOCALE_FOR_TESTS ".log");
+    compareFiles("reader_1-C.log", "reader_1-" LOCALE_FOR_TESTS ".log");
+}
+TEST(IGESImportTestSuite, testImportIGES_1W)
+{
+    compareFiles("out1-C.igs", "out1-" LOCALE_FOR_TESTS ".igs");
 }
 #endif
 

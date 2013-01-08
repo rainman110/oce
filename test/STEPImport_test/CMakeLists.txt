@@ -1,4 +1,5 @@
 IF (${PROJECT_NAME}_DATAEXCHANGE)
+    SET(LOCALE_FOR_TESTS ${${PROJECT_NAME}_TESTING_LOCALE})
     SET(step_file_ap203_1 ${CMAKE_SOURCE_DIR}/test/data/STEP/as1-tu-203.stp)
     SET(step_file_ap203_2 ${CMAKE_SOURCE_DIR}/test/data/STEP/as1_pe_203.stp)
     SET(step_file_ap214_1 ${CMAKE_SOURCE_DIR}/test/data/STEP/as1-oc-214.stp)

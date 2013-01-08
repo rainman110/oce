@@ -1,4 +1,5 @@
 IF (${PROJECT_NAME}_DATAEXCHANGE)
+    SET(LOCALE_FOR_TESTS ${${PROJECT_NAME}_TESTING_LOCALE})
     SET(brep_file_1 ${CMAKE_SOURCE_DIR}/test/data/brep/15_cylinder_head.brep)
     SET(brep_file_2 ${CMAKE_SOURCE_DIR}/test/data/brep/27_leverarm.brep)
     SET(brep_file_3 ${CMAKE_SOURCE_DIR}/test/data/brep/29_misc1.brep)

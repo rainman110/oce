@@ -1,6 +1,8 @@
 #ifndef BREPIMPORT_TEST_CONFIG_H
 #define BREPIMPORT_TEST_CONFIG_H
  
+#cmakedefine LOCALE_FOR_TESTS "@LOCALE_FOR_TESTS@"
+
 #cmakedefine brep_file_1 "@brep_file_1@"
 #cmakedefine brep_file_2 "@brep_file_2@"
 #cmakedefine brep_file_3 "@brep_file_3@"

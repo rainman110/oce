@@ -134,12 +134,21 @@ IF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
 ENDIF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
 FOREACH(MODULE ${TOOLKIT_MODULES})
 	
+	IF(APPLE)
+	  FILE(GLOB source_files
+		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.cxx
+		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.mm
+		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.c
+		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.cxx
+		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.c)
 	# add all .cxx/*.c files or each module
-	FILE(GLOB source_files
+	ELSE(APPLE)
+	  FILE(GLOB source_files
 		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.cxx
 		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.c
 		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.cxx
 		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.c)
+	ENDIF(APPLE)
 	SET (header_files "")
 	
 	IF(${PROJECT_NAME}_ADD_HEADERS)

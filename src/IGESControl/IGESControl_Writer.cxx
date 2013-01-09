@@ -49,6 +49,11 @@
 #include <Message_ProgressIndicator.hxx>
 #include <errno.h>
 
+#ifdef HAVE_XLOCALE_H
+#include <xlocale.h>
+#endif
+#include <locale.h>
+
 IGESControl_Writer::IGESControl_Writer ()
     :  theTP (new Transfer_FinderProcess(10000)) ,
        thedit (IGESSelect_WorkLibrary::DefineProtocol()) ,
@@ -252,6 +257,16 @@ Standard_Boolean IGESControl_Writer::Write
 #endif
   if(!nbEnt)
     return Standard_False;
+#ifdef WNT
+  int oldConfigureThreadLocale = _configurethreadlocale(_ENABLE_PER_THREAD_LOCALE);
+  char* localeOld = setlocale(LC_NUMERIC, "C");
+#elif defined(HAVE_USELOCALE)
+  locale_t localeC = newlocale (LC_NUMERIC_MASK, "C", 0);
+  locale_t localeOld = uselocale(localeC);
+#else
+  char* localeOld = setlocale(LC_NUMERIC, "C");
+#endif
+
   IGESData_IGESWriter IW (themod);
 //  ne pas oublier le mode fnes ... a transmettre a IW
   IW.SendModel (IGESSelect_WorkLibrary::DefineProtocol());
@@ -263,6 +278,17 @@ Standard_Boolean IGESControl_Writer::Write
 #ifdef DEBUG
   cout<<" ...  fichier ecrit  ..."<<endl;
 #endif
+
+#ifdef WNT
+  _configurethreadlocale(oldConfigureThreadLocale);
+  setlocale(LC_NUMERIC, localeOld);
+#elif defined(HAVE_USELOCALE)
+  uselocale(localeOld);
+  freelocale(localeC);
+#else
+  setlocale(LC_NUMERIC, localeOld);
+#endif
+
   return status;
 }
 

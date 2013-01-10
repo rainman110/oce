@@ -119,12 +119,22 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_ADD_HEADERS "Add headers to project files" 
 MARK_AS_ADVANCED(${PROJECT_NAME}_ADD_HEADERS)
 OPTION_WITH_DEFAULT( ${PROJECT_NAME}_DISABLE_BSPLINE_MESHER "Disable BSpline Mesher" OFF )
 MARK_AS_ADVANCED(${PROJECT_NAME}_DISABLE_BSPLINE_MESHER)
-
+IF(APPLE)
+  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_OSX_USE_COCOA_OpenGL "Use native OSX Cocoa OpenGl implementation" OFF )
+ENDIF(APPLE)
 IF (NOT WIN32)
   OPTION_WITH_DEFAULT( ${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS "Filter out system paths from RPATH" ON )
   MARK_AS_ADVANCED(${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS)
 ENDIF (NOT WIN32)
 
+#
+# By default, OSX uses X11 OpenGl implementation
+#
+IF (APPLE)
+  IF (NOT ${PROJECT_NAME}_OSX_USE_COCOA_OpenGL)
+    SET(MACOSX_USE_GLX TRUE)
+  ENDIF(NOT ${PROJECT_NAME}_OSX_USE_COCOA_OpenGL)
+ENDIF(APPLE)
 # The default for the DEB define is ON for all the platforms , in debug mode.
 # In MSVC it is not desirable to have it ON by default, since users must 
 # compile/use the OCE debug libraries to build it's own programs in DEBUG mode.

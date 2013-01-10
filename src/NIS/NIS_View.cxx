@@ -28,11 +28,8 @@
 #ifdef WNT
 #include <windows.h>
 #endif
-#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
-  #include <OpenGL/gl.h>
-#else
-  #include <GL/gl.h>
-#endif
+
+#include <OpenGl_GlCore11.hxx>
 
 IMPLEMENT_STANDARD_HANDLE  (NIS_View, V3d_OrthographicView)
 IMPLEMENT_STANDARD_RTTIEXT (NIS_View, V3d_OrthographicView)

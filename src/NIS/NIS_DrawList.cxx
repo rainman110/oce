@@ -25,11 +25,7 @@
 #include <windows.h>
 #endif
 
-#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
-  #include <OpenGL/gl.h>
-#else
-  #include <GL/gl.h>
-#endif
+#include <OpenGl_GlCore11.hxx>
 
 //=======================================================================
 //function : NIS_DrawList()
